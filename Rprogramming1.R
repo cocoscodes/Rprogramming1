@@ -138,7 +138,7 @@ m
 # Reading data ----
 
 
-
+sessionInfo()
 
 
 
