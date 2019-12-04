@@ -47,6 +47,7 @@ as.logical(x)
 as.character(x)
 
 # list ----
+# lists are vectors that can have diffent types
 x <- list(1,"a",TRUE,1+4i)
 x
 
@@ -116,6 +117,30 @@ df <- data.frame(foo = 1:4, bar = c(T, T, F, F))
 df
 nrow(df)
 ncol(df)
+
+# Names ----
+n <- 1:3
+names(n)
+names(n) <- c("one","two","three")
+n
+names(n)
+# list can also have names
+l <- list(a=1,b=2,c=3)
+l
+# matrices dimensions names
+m <- matrix(1:4, nrow = 2, ncol = 2)
+dimnames(m) <- list(c("a", "b"), c("c", "d"))
+m
+colnames(m) <- c("h", "f")
+rownames(m) <- c("x", "z")
+m
+
+# Reading data ----
+
+
+
+
+
 
 
 
