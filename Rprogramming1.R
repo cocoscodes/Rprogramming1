@@ -151,11 +151,33 @@ dput, # for outputting a textual representation of an R object
 save, # for saving an arbitrary number of R objects in binary format (possibly compressed) to a file.
 serialize, # for converting an R object into a binary format for outputting to a connection (or file).
 
+# Reading large data set ----
+# figure out if your computer's RAM will support the data set
+1,500,000 × 120 × 8 bytes/numeric = 1,440,000,000 bytes
+= 1,440,000,000 / 2^20 bytes/MB
+= 1,373.29 MB
+= 1.34 G # rule of thumb you will need double this value to use read.table
 
+# Example to optimize the data set reading - this will allow reduce the memory usage
+initial <- read.table("datatable.txt", nrows = 100) # create a small subset
+classes <- sapply(initial, class) # define the class type
+tabAll <- read.table("datatable.txt", colClasses = classes) # create the final dataset and assign the classes
 
+# Textual data formats ----
+# using dput, dget, and dump
+y <- data.frame(a=1,b="a")
+dput(y)
+dput(y,file="y.R")# creates an R script for one object
+new.y <- dget("y.R")# creates and object using and R script
+new.y
 
-
-
+w <- "foo"
+y <- data.frame(a=1,b="a")
+dump(c("w","y"),file = "data.R")# creates an R script using multiple objects
+rm(w,y)# removes objects
+source("data.R")# brings back object from an R script
+y
+w
 
 
 
