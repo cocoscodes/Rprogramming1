@@ -179,6 +179,22 @@ source("data.R")# brings back object from an R script
 y
 w
 
+# Connections: Interfaces to the Outside World ----
+file() # opens a connection to a file
+gzfile() # opens a connection to a file compressed with gzip
+bzfile() # opens a connection to a file compressed with bzip2
+url() # opens a connection to a webpage
+file.choose() # usefull
+
+
+
+
+
+
+
+
+
+
 
 
 
