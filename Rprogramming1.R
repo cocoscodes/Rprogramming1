@@ -247,10 +247,24 @@ x[good]
 y[good]
 # you can use complete.cases() in data frames too
 
+# Vectorized operations ----
+x <- 1:4
+y <- 6:9
+z <- x + y
+z
 
+x > 2 # logical comparison
 
+x - y
+x * y
+x / y
 
-
+# Vectorized operations in matrices
+x <- matrix(1:4, 2, 2)
+y <- matrix(rep(10, 4), 2, 2) # repeat 10 4 times
+x * y
+x / y
+x %*% y # true matrix multiplication - sort of a sumproduct
 
 
 
