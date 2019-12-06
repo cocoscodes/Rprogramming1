@@ -46,7 +46,7 @@ as.logical(x)
 
 as.character(x)
 
-# list ----
+# List ----
 # lists are vectors that can have diffent types
 x <- list(1,"a",TRUE,1+4i)
 x
@@ -179,17 +179,129 @@ source("data.R")# brings back object from an R script
 y
 w
 
+# Connections: Interfaces to the Outside World ----
+file() # opens a connection to a file
+gzfile() # opens a connection to a file compressed with gzip
+bzfile() # opens a connection to a file compressed with bzip2
+url() # opens a connection to a webpage
+file.choose() # usefull
 
+# Subsetting ----
+x <- c("a", "b", "c", "c", "d", "a")
+x[1] ## Extract the first element
+x[2] ## Extract the second element
+x[1:4]
+x[c(1, 3, 4)]
 
+u <- x > "a" # adding a logical parameter
+u
+x[u]
 
+# Subsetting matrices ----
+x <- matrix(1:6, 2, 3)
+x
+x[1, 2]
+x[1, ] ## Extract the first row
+x[, 2] ## Extract the second column
 
+x <- matrix(1:6, 2, 3) # when subsetting one element of a matrix you might get a vector instead of a matrix, use the drop argument to avoid this
+x[1, ]
+x[1, , drop = FALSE]
 
+# Subsetting a list ----
+x <- list(foo = 1:4, bar = 0.6)
+x[1]
+x[[1]]
+x[["bar"]]
+x$bar
 
+# Subsetting nested elements in a list
+x <- list(a = list(10, 12, 14), b = c(3.14, 2.81))
+x
+## Get the 3rd element of the 1st element
+x[[c(1, 3)]]
+## Same as above
+x[[1]][[3]]
 
+# Extract multiple elements
+x <- list(foo = 1:4, bar = 0.6, baz = "hello")
+x[c(1, 3)]
 
+# Patial matching
+x <- list(aardvark = 1:5)
+x$a
+x[["a"]] # NULL
+x[["a", exact = FALSE]]
 
+# Removing NA ----
+x <- c(1, 2, NA, 4, NA, 5)
+bad <- is.na(x)
+print(bad)
+x[!bad]# subset which is TRUE
 
+x <- c(1, 2, NA, 4, NA, 5)
+y <- c("a", "b", NA, "d", NA, "f")
+good <- complete.cases(x, y) # multiple elements
+good
+x[good]
+y[good]
+# you can use complete.cases() in data frames too
 
+# Vectorized operations ----
+# to avoid writting many forloops and whileloops
+x <- 1:4
+y <- 6:9
+z <- x + y
+z
 
+x > 2 # logical comparison
 
+x - y
+x * y
+x / y
 
+# Vectorized operations in matrices
+x <- matrix(1:4, 2, 2)
+y <- matrix(rep(10, 4), 2, 2) # repeat 10 4 times
+x * y # element-wise multiplication
+x / y
+x %*% y # true matrix multiplication - sort of a sumproduct
+
+# Quiz testing
+x <- c(4, "a", TRUE)
+class(x)
+
+x <- c(1,3, 5)  
+y <- c(3, 2, 10)
+rbind(x,y)
+x <- list(2, "a", "b", TRUE)
+x[[1]]
+length(x[[1]])
+x <- 1:4 
+y <- 2:3
+class(x+y)
+x <- c(3, 5, 1, 10, 12, 6)
+x[x<6]==0
+x[x %in% 1:5] <- 0
+x
+data <- read.csv(file.choose())
+head(data)
+tail(data)
+str(data)
+data[47,]
+summary(is.na(data[,1]))
+data
+summary(data)
+good <- complete.cases(data)
+summary(data[good,])
+
+str(data)
+summary(data[data$Ozone>31 & data$Temp>90,])
+
+summary(data[data$Month==6,])
+
+summary(data[data$Month==5,])
+
+x <- 4L
+class(x)
+x
