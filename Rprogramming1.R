@@ -233,7 +233,7 @@ x$a
 x[["a"]] # NULL
 x[["a", exact = FALSE]]
 
-# Removing NA
+# Removing NA ----
 x <- c(1, 2, NA, 4, NA, 5)
 bad <- is.na(x)
 print(bad)
@@ -248,6 +248,7 @@ y[good]
 # you can use complete.cases() in data frames too
 
 # Vectorized operations ----
+# to avoid writting many forloops and whileloops
 x <- 1:4
 y <- 6:9
 z <- x + y
@@ -262,11 +263,45 @@ x / y
 # Vectorized operations in matrices
 x <- matrix(1:4, 2, 2)
 y <- matrix(rep(10, 4), 2, 2) # repeat 10 4 times
-x * y
+x * y # element-wise multiplication
 x / y
 x %*% y # true matrix multiplication - sort of a sumproduct
 
+# Quiz testing
+x <- c(4, "a", TRUE)
+class(x)
 
+x <- c(1,3, 5)  
+y <- c(3, 2, 10)
+rbind(x,y)
+x <- list(2, "a", "b", TRUE)
+x[[1]]
+length(x[[1]])
+x <- 1:4 
+y <- 2:3
+class(x+y)
+x <- c(3, 5, 1, 10, 12, 6)
+x[x<6]==0
+x[x %in% 1:5] <- 0
+x
+data <- read.csv(file.choose())
+head(data)
+tail(data)
+str(data)
+data[47,]
+summary(is.na(data[,1]))
+data
+summary(data)
+good <- complete.cases(data)
+summary(data[good,])
 
+str(data)
+summary(data[data$Ozone>31 & data$Temp>90,])
 
+summary(data[data$Month==6,])
 
+summary(data[data$Month==5,])
+
+x <- 4L
+class(x)
+x
