@@ -273,7 +273,7 @@ class(x)
 
 x <- c(1,3, 5)  
 y <- c(3, 2, 10)
-rbind(x,y)
+cbind(x,y)
 x <- list(2, "a", "b", TRUE)
 x[[1]]
 length(x[[1]])
@@ -302,6 +302,6 @@ summary(data[data$Month==6,])
 
 summary(data[data$Month==5,])
 
-x <- 4L
+x <- 4
 class(x)
 x
