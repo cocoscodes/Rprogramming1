@@ -52,6 +52,19 @@ setwd(old.dir) # go back to an original working directory SAVED AS A VARIABLE
 
 file.remove("testdir/")
 
+swirl()
+
+# creating a sequence of numbers with operators 
+1:20 
+pi:10
+15:1
+?`:`
+seq(1:20)
+seq(0,10,by=0.5) # determines the increments
+my_seq<-seq(5, 10, length=30) # sequence of number between certain values
+length(my_seq)
+1:length(my_seq)
+seq(along.with = my_seq)
 
 
 
