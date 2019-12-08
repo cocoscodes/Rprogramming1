@@ -133,9 +133,27 @@ identical(vect,vect2)
 vect["bar"]
 vect[c("foo", "bar")]
 
+# Matrices and data frames ----
 
+my_vector<-1:20
+dim(my_vector) # NULL
+length(my_vector) # 20
+dim(my_vector)<-c(4,5) # add dimensions
+attributes(my_vector) # we can see the new attributes
+class(my_vector) # now it is a matrix
+my_matrix<-my_vector # it is no longer a vector
+?matrix() # also works for createing a mtrix
+my_matrix2<-matrix(1:20,nrow = 4, ncol = 5)
+identical(my_matrix,my_matrix2)
 
+patients<-c("Bill","Gina","Kelly","Sean")
+cbind(patients,my_matrix) # new matrix is character, matrices can only contain one type of variable
+my_data<-data.frame(patients,my_matrix)
+class(my_data)
+cnames<-c("patient", "age", "weight","bp", "rating", "test") #vector for columns names
+colnames(my_data)<-cnames
 
+bye()
 
 
 
