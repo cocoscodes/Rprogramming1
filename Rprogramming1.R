@@ -353,7 +353,188 @@ x <- as.POSIXct("2012-10-25 01:00:00")
 y <- as.POSIXct("2012-10-25 06:00:00", tz = "GMT")
 y-x
 
+# Managing Data Frames with the dplyr package ----
+install.packages("dplyr")
+library(dplyr)
 
+chicago <- readRDS("chicago")
+dim(chicago)
+str(chicago)
+summary(chicago)
+head(chicago)
+
+names(chicago)[1:3]
+subset <- select(chicago, city:dptp) # select function simplifies the operation
+head(subset)
+select(chicago, -(city:dptp)) # as before we can omit values
+
+i <- match("city", names(chicago)) # match brings numerical value
+j <- match("dptp", names(chicago))
+head(chicago[, -(i:j)])
+
+subset <- select(chicago, ends_with("2"))
+str(subset)
+subset <- select(chicago, starts_with("d"))
+str(subset)
+?select
+
+chic.f <- filter(chicago, pm25tmean2 > 30)# filter the data frame using operations
+str(chic.f)
+summary(chic.f$pm25tmean2)
+
+chic.f <- filter(chicago, pm25tmean2 > 30 & tmpd > 80)
+select(chic.f, date, tmpd, pm25tmean2)
+
+chicago <- arrange(chicago, date) # arranging and sorting
+head(select(chicago, date, pm25tmean2), 3)
+tail(select(chicago, date, pm25tmean2), 3)
+
+chicago <- arrange(chicago, desc(date)) # descending
+head(select(chicago, date, pm25tmean2), 3)
+tail(select(chicago, date, pm25tmean2), 3)
+
+head(chicago[, 1:5], 3)
+chicago <- rename(chicago, dewpoint = dptp, pm25 = pm25tmean2) # rename columns
+head(chicago[, 1:5], 3)
+
+chicago <- mutate(chicago, pm25detrend = pm25 - mean(pm25, na.rm = TRUE)) # mutate creates new variables from existign variables
+head(chicago)
+# There is also the related transmute() function, which does the same thing as mutate() but then drops all non-transformed variables.
+head(transmute(chicago, 
+               pm10detrend = pm10tmean2 - mean(pm10tmean2, na.rm = TRUE),
+               o3detrend = o3tmean2 - mean(o3tmean2, na.rm = TRUE)))
+
+chicago <- mutate(chicago, year = as.POSIXlt(date)$year + 1900)
+head(chicago)
+?DateTimeClasses
+
+years <- group_by(chicago, year) # group_by creaetes a tibble
+years
+summarize(years, pm25 = mean(pm25, na.rm = TRUE),
+          o3 = max(o3tmean2, na.rm = TRUE),
+          no2 = median(no2tmean2, na.rm = TRUE)) # it usually is followed by a summarize function 
+
+# getting the results with quintiles of pm25
+qq <- quantile(chicago$pm25, seq(0, 1, 0.2), na.rm = TRUE) # quantile calculates the intervals
+chicago <- mutate(chicago, pm25.quint = cut(pm25, qq)) # cut converts numeric to factor
+head(chicago)
+quint <- group_by(chicago, pm25.quint)
+quint
+summarize(quint, o3 = mean(o3tmean2, na.rm = TRUE),
+          no2 = mean(no2tmean2, na.rm = TRUE))
+
+# to avoid nesting functions we can us the operator "pipe" %>%, with this we dont need a set of temporary variables
+mutate(chicago, pm25.quint = cut(pm25, qq)) %>%
+  group_by(pm25.quint) %>%
+  summarize(o3 = mean(o3tmean2, na.rm = TRUE),
+              no2 = mean(no2tmean2, na.rm = TRUE))
+
+mutate(chicago, month = as.POSIXlt(date)$mon + 1) %>%
+  group_by(month) %>%
+  summarize(pm25 = mean(pm25, na.rm = TRUE),
+              o3 = max(o3tmean2, na.rm = TRUE),
+              no2 = median(no2tmean2, na.rm = TRUE))
+# dplyr can work with other data frame “backends” such as SQL databases. There is an SQL interface for relational databases via the DBI package
+# dplyr can be integrated with the data.table package for large fast tables
+
+# Control structures ----
+if and else # testing a condition and acting on it
+for # execute a loop a fixed number of times
+while #execute a loop while a condition is true
+repeat # execute an infinite loop (must break out of it to stop)
+break # break the execution of a loop
+next # skip an interation of a loop
+return # exit a function
+
+# useful for writting programms, but the apply functions are more useful
+
+x <- runif(1, 0, 10) # random deviates for a uniform distribution
+if(x > 3) {
+  y <- 10
+} else {
+  y <- 0
+}
+
+for(i in 1:10) {
+  print(i)
+  }
+
+x <- c("a", "b", "c", "d")
+for(i in 1:4) {
+  ## Print out each element of 'x'
+    print(x[i])
+  }
+
+## Generate a sequence based on length of 'x'
+for(i in seq_along(x)) { # seq_along generate an integer sequence based on the length of an object
+  print(x[i])
+}
+
+for(letter in x) {
+  print(letter)
+  }
+
+# For one line loops, the curly braces are not strictly necessary.
+for(i in 1:4) print(x[i])
+
+# nested loops
+x <- matrix(1:6, 2, 3)
+for(i in seq_len(nrow(x))) { # similar to seq_along, but with length
+  for(j in seq_len(ncol(x))) {
+    print(x[i, j])
+  }
+}
+# be careful not to nest more than 2 or 3 layers, it gets confusing
+
+count <- 0
+while(count < 10) {
+  print(count)
+  count <- count + 1
+}
+# while loops can become infinite if not handle with care
+
+z <- 5
+set.seed(1) # Set the seed of R‘s random number generator, which is useful for creating simulations or random objects that can be reproduced.
+while(z >= 3 && z <= 10) {
+    coin <- rbinom(1, 1, 0.5) # flipping a coin - rbinom generates random for binomial distributio
+      if(coin == 1) { ## random walk
+        z <- z + 1
+        } else {
+          z <- z - 1
+          }
+    }
+print(z)
+# & and && indicate logical AND and | and || indicate logical OR. The shorter form performs elementwise comparisons in much the same way as arithmetic operators. The longer form evaluates left to right examining only the first element of each vector. Evaluation proceeds only until the result is determined. The longer form is appropriate for programming control-flow and typically preferred in if clauses.
+
+# repeat, next, break
+x0 <- 1
+tol <- 1e-8
+repeat { # repeat starts an infinite loop that search to get close enough to a value, optimization
+  x1 <- computeEstimate() # function not defined, just for the example
+  if(abs(x1 - x0) < tol) { ## Close enough?
+    break
+  } else {
+    x0 <- x1
+  }
+}
+
+# next
+for(i in 1:100) {
+  if(i <= 20) {
+    ## Skip the first 20 iterations
+    next
+  }
+  ## Do something here
+}
+
+# break
+for(i in 1:100) {
+  print(i)
+  if(i > 20) {
+    ## Stop loop after 20 iterations
+    break
+  }
+}
 
 
 
