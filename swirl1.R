@@ -153,8 +153,7 @@ class(my_data)
 cnames<-c("patient", "age", "weight","bp", "rating", "test") #vector for columns names
 colnames(my_data)<-cnames
 
-bye()
-
+swirl()
 
 
 

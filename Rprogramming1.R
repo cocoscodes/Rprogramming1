@@ -21,7 +21,7 @@ second(10)
 
 ?dim()# dimensions of an object
 
-# notes on Week 1 -----
+# Notes on Week 1 -----
 # if you would like to add a number with a text type use a capital L next to it "1L"
 # "Inf" is a numerical value representing infinity
 # NaN - undefined value
@@ -305,3 +305,60 @@ summary(data[data$Month==5,])
 x <- 4
 class(x)
 x
+
+# Notes on week 2 ----
+# Dates and Times in R ----
+x <- as.Date("1970-01-01")
+x
+class(x)
+
+unclass(x) # 0 it is the first date
+unclass(as.Date("1970-01-02")) # 1, it is second date availble as the sequential list of dates
+
+# Times can be coerced from a character string using the as.POSIXlt or as.POSIXct function
+x <- Sys.time()
+x
+class(x) ## 'POSIXct' object
+unclass(x) ## Internal representation
+x$sec ## Can't do this with 'POSIXct'! you need a POSIXlt
+
+
+p <- as.POSIXlt(x)
+p
+class(p)
+names(unclass(p)) 
+# "sec" "min" "hour" "mday" "mon" "year" "wday" "yday" "isdst" "zone" "gmtoff"
+p$wday ## day of the week  
+p$sec ## That's better
+
+datestring <- c("January 10, 2012 10:40", "December 9, 2011 9:10")
+x <- strptime(datestring, "%B %d, %Y %H:%M")
+x # strptime() takes a character vector that has dates and times and converts them into to a POSIXlt object.
+class(x)
+?strptime # to see the format to be displayed
+
+# Operations in dates in R ----
+x <- as.Date("2012-01-01")
+y <- strptime("9 Jan 2011 11:34:21", "%d %b %Y %H:%M:%S")
+x-y # Error
+x <- as.POSIXlt(x) # making them compatible allows operations between them
+x-y
+
+x <- as.Date("2012-03-01")
+y <- as.Date("2012-02-28")
+x-y # no need to adjust leap years, leap seconds, daylight savings, and time zones
+
+## My local time zone
+x <- as.POSIXct("2012-10-25 01:00:00")
+y <- as.POSIXct("2012-10-25 06:00:00", tz = "GMT")
+y-x
+
+
+
+
+
+
+
+
+
+
