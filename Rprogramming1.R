@@ -536,9 +536,62 @@ for(i in 1:100) {
   }
 }
 
+# Funtions ----
+add2 <- function(x,y){
+  x+y
+}
+add2(3,5)
+
+above10 <- function(x){
+  use <- x>10
+  x[use]
+}
+
+x <- 1:20
+above10(x)
+
+above <- function(x,n){ # you can specify parameters such as n=10
+  use <- x>n
+  x[use]
+}
+
+x <- 1:20
+above(x,12)
+
+columnmean <- function(x){
+  nc <- ncol(x)
+  means <- numeric(nc)# this turns the number of columns to zeros
+  for(i in 1:nc){
+    means[i] <- mean(x[,i],na.rm = TRUE)# if you do not specify to remove NAs it will get NA results
+  }
+  means
+}
+
+columnmean(airquality)
+head(airquality)
+
+f1 <- function(num) {
+  for(i in seq_len(num)) {
+    cat("Hello, world!\n")# concatenate and print function cat
+    }
+}
+
+f1(3)
 
 
+f2 <- function(num) {
+  hello <- "Hello, world!\n"
+  for(i in seq_len(num)) {
+    cat(hello)
+    }
+  chars <- nchar(hello) * num
+  chars
+}
 
+f2(3)
+
+# Argument matching
+args(lm) # some arguments are predifined and some are not
 
 
 
