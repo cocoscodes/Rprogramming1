@@ -104,7 +104,7 @@ is.nan(mv)
 read.table() or 
 read.csv().
 #However, data frames can also be created explicitly with the 
-data.frame() function 
+?data.frame() function 
 #or they can be coerced from other types of objects like lists.
 #Data frames can be converted to a matrix by calling 
 data.matrix(). 
@@ -267,7 +267,7 @@ x * y # element-wise multiplication
 x / y
 x %*% y # true matrix multiplication - sort of a sumproduct
 
-# Quiz testing
+# Quiz week 1 ----
 x <- c(4, "a", TRUE)
 class(x)
 
@@ -726,29 +726,36 @@ plot(x, exp(-(y - min(y))), type = "l")
 # 3.- Limit the width of your code. 80?
 # 4.- Limit the length of individual functions.
 
+# Quiz week 2 ----
+
+getwd()
+setwd("C:/Users/asolis/Desktop/Data_training/DataScience/Rprogramming1/specdata")
+getwd()
+
+pollutantmean <- function(directory,pollutant,id=1:332){
+  directory <- getwd()
+  monitor <- list.files(directory,full.names = TRUE)
+  values <- data.frame()
+  for(i in id){
+    values <- rbind(values,read.csv(monitor[i]))
+  } 
+  mean <- mean(values[,pollutant],na.rm = TRUE)
+  mean
+}
+
+pollutantmean(x,"sulfate",1:10)
+pollutantmean(x,"nitrate",70:72)
+pollutantmean(x,"nitrate",23)
+pollutantmean(x,"nitrata",23)
 
 
+?if(pollutant=xor("sulfate" | "nitrate")){
+  print("choose: sulfate or nitrate")
+} else {
+  print("ok")
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+pollutant <- "nitraate"
 
 
 
