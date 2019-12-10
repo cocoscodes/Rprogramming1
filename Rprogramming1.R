@@ -427,22 +427,22 @@ summarize(quint, o3 = mean(o3tmean2, na.rm = TRUE),
 mutate(chicago, pm25.quint = cut(pm25, qq)) %>%
   group_by(pm25.quint) %>%
   summarize(o3 = mean(o3tmean2, na.rm = TRUE),
-              no2 = mean(no2tmean2, na.rm = TRUE))
+            no2 = mean(no2tmean2, na.rm = TRUE))
 
 mutate(chicago, month = as.POSIXlt(date)$mon + 1) %>%
   group_by(month) %>%
   summarize(pm25 = mean(pm25, na.rm = TRUE),
-              o3 = max(o3tmean2, na.rm = TRUE),
-              no2 = median(no2tmean2, na.rm = TRUE))
+            o3 = max(o3tmean2, na.rm = TRUE),
+            no2 = median(no2tmean2, na.rm = TRUE))
 # dplyr can work with other data frame “backends” such as SQL databases. There is an SQL interface for relational databases via the DBI package
 # dplyr can be integrated with the data.table package for large fast tables
 
 # Control structures ----
 if and else # testing a condition and acting on it
-for # execute a loop a fixed number of times
+  for # execute a loop a fixed number of times
 while #execute a loop while a condition is true
 repeat # execute an infinite loop (must break out of it to stop)
-break # break the execution of a loop
+  break # break the execution of a loop
 next # skip an interation of a loop
 return # exit a function
 
@@ -457,13 +457,13 @@ if(x > 3) {
 
 for(i in 1:10) {
   print(i)
-  }
+}
 
 x <- c("a", "b", "c", "d")
 for(i in 1:4) {
   ## Print out each element of 'x'
-    print(x[i])
-  }
+  print(x[i])
+}
 
 ## Generate a sequence based on length of 'x'
 for(i in seq_along(x)) { # seq_along generate an integer sequence based on the length of an object
@@ -472,7 +472,7 @@ for(i in seq_along(x)) { # seq_along generate an integer sequence based on the l
 
 for(letter in x) {
   print(letter)
-  }
+}
 
 # For one line loops, the curly braces are not strictly necessary.
 for(i in 1:4) print(x[i])
@@ -496,13 +496,13 @@ while(count < 10) {
 z <- 5
 set.seed(1) # Set the seed of R‘s random number generator, which is useful for creating simulations or random objects that can be reproduced.
 while(z >= 3 && z <= 10) {
-    coin <- rbinom(1, 1, 0.5) # flipping a coin - rbinom generates random for binomial distributio
-      if(coin == 1) { ## random walk
-        z <- z + 1
-        } else {
-          z <- z - 1
-          }
-    }
+  coin <- rbinom(1, 1, 0.5) # flipping a coin - rbinom generates random for binomial distributio
+  if(coin == 1) { ## random walk
+    z <- z + 1
+  } else {
+    z <- z - 1
+  }
+}
 print(z)
 # & and && indicate logical AND and | and || indicate logical OR. The shorter form performs elementwise comparisons in much the same way as arithmetic operators. The longer form evaluates left to right examining only the first element of each vector. Evaluation proceeds only until the result is determined. The longer form is appropriate for programming control-flow and typically preferred in if clauses.
 
@@ -573,7 +573,7 @@ head(airquality)
 f1 <- function(num) {
   for(i in seq_len(num)) {
     cat("Hello, world!\n")# concatenate and print function cat
-    }
+  }
 }
 
 f1(3)
@@ -583,7 +583,7 @@ f2 <- function(num) {
   hello <- "Hello, world!\n"
   for(i in seq_len(num)) {
     cat(hello)
-    }
+  }
   chars <- nchar(hello) * num
   chars
 }
@@ -631,7 +631,7 @@ f(1,2) # now that the Z value has been define in the environment the function ca
 make.power <- function(n) { # passing a function to define a function
   pow <- function(x) {
     x^n
-    }
+  }
   pow
 }
 cube <- make.power(3)
@@ -667,3 +667,94 @@ g <- function(x) { # formal object
   ## 'y' is a free variable
 }
 g(2)
+
+# Application: optimization ----
+# Optimization routines in R like optim(), nlm(), and optimize()
+
+make.NegLogLik <- function(data, fixed = c(FALSE, FALSE)) { # constructor function
+  params <- fixed
+  function(p) {
+    params[!fixed] <- p
+    mu <- params[1] # mean
+    sigma <- params[2] # standard deviation
+    
+    ## Calculate the Normal density
+    a <- -0.5*length(data)*log(2*pi*sigma^2)
+    b <- -0.5*sum((data-mu)^2) / (sigma^2)
+    -(a + b)
+  }
+}
+# Note: Optimization functions in R minimize functions, so you need to use the negative loglikelihood.
+
+set.seed(1)
+normals <- rnorm(100, 1, 2)
+nLL <- make.NegLogLik(normals)
+nLL # this is now the negative log likelihood function
+## What's in the function environment?
+ls(environment(nLL))
+
+# we can now use optim()
+optim(c(mu = 0, sigma = 1), nLL)$par
+
+# optimizing only for the mean fixing the SD
+nLL <- make.NegLogLik(normals,c(FALSE,2))
+optimize(nLL,c(-1,3))$minimum
+
+# optimizing only for the SD fixing the mean
+nLL <- make.NegLogLik(normals,c(1,FALSE))
+optimize(nLL,c(1e-6,10))$minimum
+
+# plotting the likelihood
+## Fix 'mu' to be equalt o 1
+nLL <- make.NegLogLik(normals, c(1, FALSE))
+x <- seq(1.7, 1.9, len = 100)
+## Evaluate 'nLL()' at every point in 'x'
+y <- sapply(x, nLL)
+plot(x, exp(-(y - min(y))), type = "l")
+
+## Fix 'sigma' to be equal to 2
+nLL <- make.NegLogLik(normals, c(FALSE, 2))
+x <- seq(0.5, 1.5, len = 100)
+## Evaluate 'nLL()' at every point in 'x'
+y <- sapply(x, nLL)
+plot(x, exp(-(y - min(y))), type = "l")
+
+# Coding standards ----
+
+# 1.- Always use text files / text editor.
+# 2.- Indent your code. (4, or ideally 8 spaces)
+# 3.- Limit the width of your code. 80?
+# 4.- Limit the length of individual functions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
