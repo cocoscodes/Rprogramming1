@@ -592,7 +592,78 @@ f2(3)
 
 # Argument matching
 args(lm) # some arguments are predifined and some are not
+# 1. Check for exact match for a named argument
+# 2. Check for a partial match
+# 3. Check for a positional match
+f <- function(a, b = 1, c = 2, d = NULL) {
+} # example
+
+# Lazy evaluation - Arguments to functions are evaluated lazily, so they are evaluated only as needed in the body of the function.
+f <- function(a, b) {
+  a^2
+}
+f(2)
+
+# The ... argument - often used when extending another function and you don’t want to copy the entire argument list of the original function
+myplot <- function(x, y, type = "l", ...) {
+  plot(x, y, type = type, ...) ## Pass '...' to 'plot' function
+}
+
+mean # Generic functions use ... so that extra arguments can be passed to methods.
+args(paste) # The ... argument is necessary when the number of arguments passed to the function cannot be known in advance. This is clear in functions like paste() and cat().
+args(cat)
+
+# Scoping rules in R ----
+
+lm <- function(x){x*x} # there is already an R functiion called lm
+lm
+lm(1)
+search() # how does R chooses the right one - click on environment to see the order. One can also click tab to select the right function
+
+# lexical scoping
+f <- function(x, y) {
+  x^2 + y / z # how do we define a Z (free variable)
+}
+f(1,2) # Error in f(1, 2) : object 'z' not found 
+z <- 3
+f(1,2) # now that the Z value has been define in the environment the function can now be used
+
+make.power <- function(n) { # passing a function to define a function
+  pow <- function(x) {
+    x^n
+    }
+  pow
+}
+cube <- make.power(3)
+square <- make.power(2)
+cube(3)
+square(2)
+
+ls(environment(cube))
+get("n",environment(cube))
+
+ls(environment(square))
+get("n",environment(square))
+
+# Lexical vs Dynamic scoping
+
+y <- 10
+
+f <- function(x) {
+  y <- 2
+  y^2 + g(x)
+}
+
+g <- function(x) {
+  x*y
+}
+
+f(3) # 34, g function is not defined inside the f function, so the value of Y remains 10
 
 
-
-
+g <- function(x) { # formal object
+  a <- 3 # inside object
+  x+a+y
+  ## 'y' is a free variable
+}
+g(2)
