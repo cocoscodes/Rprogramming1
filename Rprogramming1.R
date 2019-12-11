@@ -727,20 +727,26 @@ plot(x, exp(-(y - min(y))), type = "l")
 # 4.- Limit the length of individual functions.
 
 # Quiz week 2 ----
+# Part 1
 
 getwd()
-setwd("C:/Users/asolis/Desktop/Data_training/DataScience/Rprogramming1/specdata")
+setwd("specdata")
 getwd()
 
 pollutantmean <- function(directory,pollutant,id=1:332){
-  directory <- getwd()
-  monitor <- list.files(directory,full.names = TRUE)
-  values <- data.frame()
-  for(i in id){
-    values <- rbind(values,read.csv(monitor[i]))
-  } 
-  mean <- mean(values[,pollutant],na.rm = TRUE)
-  mean
+  if(pollutant %in% c("sulfate","nitrate")){
+    directory <- getwd()
+    monitor <- list.files(directory,full.names = TRUE)
+    values <- data.frame()
+    for(i in id){
+      values <- rbind(values,read.csv(monitor[i]))
+    } 
+    mean <- mean(values[,pollutant],na.rm = TRUE)
+    mean
+  } else {
+    print("Choose: sulfate or nitrate")
+    return()
+  }
 }
 
 pollutantmean(x,"sulfate",1:10)
@@ -748,14 +754,6 @@ pollutantmean(x,"nitrate",70:72)
 pollutantmean(x,"nitrate",23)
 pollutantmean(x,"nitrata",23)
 
-
-?if(pollutant=xor("sulfate" | "nitrate")){
-  print("choose: sulfate or nitrate")
-} else {
-  print("ok")
-}
-
-pollutant <- "nitraate"
 
 
 
