@@ -753,6 +753,8 @@ pollutantmean(x,"sulfate",1:10)
 pollutantmean(x,"nitrate",70:72)
 pollutantmean(x,"nitrate",23)
 pollutantmean(x,"nitrata",23)
+pollutantmean(x,"sulfate",34)
+pollutantmean(x,"nitrate")
 
 # Part 2
 
@@ -774,6 +776,16 @@ complete(x,1)
 complete(x,c(2, 4, 8, 10, 12))
 complete(x,30:25)
 complete(x,3)
+cc <- complete(x, c(6, 10, 20, 34, 100, 200, 310))
+print(cc$nobs)
+cc <- complete(x, 54)
+print(cc$nobs)
+
+RNGversion("3.5.1")  
+set.seed(42)
+cc <- complete("specdata", 332:1)
+use <- sample(332, 10)
+print(cc[use, "nobs"])
 
 # Part 3
 
@@ -807,4 +819,23 @@ cr <- corr(x)
 summary(cr)
 length(cr)
 
+cr <- corr(x)                
+cr <- sort(cr)   
+RNGversion("3.5.1")
+set.seed(868)                
+out <- round(cr[sample(length(cr), 5)], 4)
+print(out)
 
+cr <- corr(x, 129)                
+cr <- sort(cr)                
+n <- length(cr)    
+RNGversion("3.5.1")
+set.seed(197)                
+out <- c(n, round(cr[sample(n, 5)], 4))
+print(out)
+
+cr <- corr(x, 2000)                
+n <- length(cr)                
+cr <- corr(x, 1000)                
+cr <- sort(cr)
+print(c(n, round(cr, 4)))
