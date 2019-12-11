@@ -239,6 +239,43 @@ mad_libs <- function(...){
 }
 "I"%p%"love"%p%"R!"
 
+# Dates and times ----
+d1 <- Sys.Date()
+class(d1)
+unclass(d1) # shows the number of days since 1907-01-01
+
+d2 <- as.Date("1969-01-01")
+unclass(d2) # shows the number of days since 1907-01-01 but negative
+
+t1 <- Sys.time()
+t1
+class(t1) # POSIXct
+unclass(t1) # number of seconds since 1970-01-01
+t2 <- as.POSIXlt(Sys.time())
+class(t2)
+t2
+unclass(t2) # is a list of values
+str(unclass(t2))
+t2$min
+
+# functions that extract useful information from any of these objects --
+weekdays()
+months()
+quarters()
+
+strptime() # converts vectors to POSIXlt
+t3 <- c("October 17, 1986 08:24")
+t4 <- strptime(t3, "%B %d, %Y %H:%M")
+class(t4)
+
+Sys.time()>t1 # using logical operators
+Sys.time() - t1 # how much time has passed
+difftime(Sys.time(), t1, units = 'days') # amount of time passed in days with difftime()
+
+
+
+
+
 
 
 
