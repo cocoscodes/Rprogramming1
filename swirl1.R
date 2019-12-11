@@ -155,6 +155,91 @@ colnames(my_data)<-cnames
 
 swirl()
 
+# Logic ----
+# logical operators ==,<, >, <=, >=, !=, !, |, ||, &, &&,
+TRUE & c(TRUE,FALSE,FALSE)
+# TRUE FALSE FALSE - recycles all elements, same logic for or |
+TRUE && c(TRUE, FALSE, FALSE)
+# TRUE - evaluates only the first element, ame logic for or ||
+# As you may recall, arithmetic has an order of operations and so do logical expressions. All AND operators are evaluated before OR operators
+
+isTRUE()
+isFALSE()
+identical()
+xor() # exclusive or, only one element can be TRUE
+xor(5 == 6, !FALSE)
+xor(TRUE, TRUE)
+
+ints <- sample(10) # sample creates a vecto of integers
+#which() function takes a logical vector as an argument and returns the indices of the vector that are TRUE
+which(c(TRUE, FALSE, TRUE))
+which(ints>7)
+any() # The any() function will return TRUE if one or more of the elements in the logical vector is TRUE.
+all() # The all() function will return TRUE if every element in the logical vector is TRUE
+
+# Functions ----
+Sys.Date() # built in function
+mean(c(2,4,5))
+# You can use the modulus operator %% to find the remainder.
+#   Ex: 7 %% 4 evaluates to 3. 
+
+boring_function <- function(x) {
+  x
+}
+
+my_mean <- function(my_vector) {
+  result<-sum(my_vector)/length(my_vector)
+  return(result)
+}
+
+remainder <- function(num, divisor=2) {
+  x <-num %% divisor
+  return(x)
+}
+
+evaluate <- function(func, dat){
+  x <-func(dat)
+  return(x)
+}
+
+args(remainder) # to view the arguments
+evaluate(function(x){x+1}, 6) # assigninng functions as arguments
+evaluate(function(x){x[1]},c(8, 4, 0))
+evaluate(function(x){x[length(x)]},c(8, 4, 0))
+
+paste()
+paste("Programming", "is", "fun!")
+
+simon_says <- function(...){
+  paste("Simon says:", ...)
+}
+
+telegram <- function(...){
+  paste("START", ... ,"STOP")
+}
+
+mad_libs <- function(...){
+  args <- list(...)
+  
+  place <- args[[1]]
+  adjective <- args[[2]]
+  noun <- args[[3]]
+  
+  paste("News from", place, "today where", adjective, "students took to the streets in protest of the new", noun, "being installed on campus.")
+}
+
+# binary operators
+"%mult_add_one%" <- function(left, right){ # Notice the quotation marks!
+  left * right + 1
+}
+4 %mult_add_one% 5
+
+"%p%" <- function(left,right){ # Remember to add arguments!
+  paste(left,right)
+}
+"I"%p%"love"%p%"R!"
+
+
 
 
 

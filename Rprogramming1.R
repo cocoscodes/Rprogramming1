@@ -839,3 +839,8 @@ n <- length(cr)
 cr <- corr(x, 1000)                
 cr <- sort(cr)
 print(c(n, round(cr, 4)))
+
+
+
+
+
