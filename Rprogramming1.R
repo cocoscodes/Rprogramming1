@@ -21,7 +21,7 @@ second(10)
 
 ?dim()# dimensions of an object
 
-# Notes on Week 1 -----
+# Notes on week 1 -----
 # if you would like to add a number with a text type use a capital L next to it "1L"
 # "Inf" is a numerical value representing infinity
 # NaN - undefined value
@@ -839,6 +839,110 @@ n <- length(cr)
 cr <- corr(x, 1000)                
 cr <- sort(cr)
 print(c(n, round(cr, 4)))
+
+# Notes on week 3 ----
+# Loop functions
+
+lapply() # Loop over a list and evaluate a function on each element
+sapply() # Same as lapply but try to simplify the result
+apply() # Apply a function over the margins of an array
+tapply() # Apply a function over subsets of a vector
+mapply() # Multivariate version of lapply
+
+# An auxiliary function 
+split 
+# is also useful, particularly in conjunction with lapply.
+
+
+# lapply 
+x <- list(a = 1:5, b = rnorm(10))
+lapply(x, mean)
+
+x <- 1:4
+lapply(x, runif)
+
+x <- 1:4
+lapply(x, runif, min = 0, max = 10)
+
+x <- list(a = matrix(1:4, 2, 2), b = matrix(1:6, 3, 2))
+x
+lapply(x, function(elt) { elt[,1] }) # using anonymous functions
+
+x <- list(a = 1:4, b = rnorm(10), c = rnorm(20, 1), d = rnorm(100, 5))
+lapply(x, mean)
+sapply(x, mean) # instead of one result per element, it returns one vector with all results
+
+# sapply and split
+
+str(split) # The combination of split() and a function like lapply() or sapply() is a common paradigm in R.
+
+x <- c(rnorm(10), runif(10), rnorm(10, 1))
+f <- gl(3, 10) # generates factor levels and replicates them
+split(x, f) # we are spliting x unsing f as the de group divider
+lapply(split(x, f), mean) # A common idiom is split followed by an lapply.
+
+library(datasets)
+head(airquality)
+s <- split(airquality, airquality$Month) # We can split the airquality data frame by the Month variable so that we have separate sub-data frames for each month.
+str(s)
+lapply(s, function(x) {
+  colMeans(x[, c("Ozone", "Solar.R", "Wind")])
+})
+sapply(s, function(x) {
+  colMeans(x[, c("Ozone", "Solar.R", "Wind")])
+}) # using sapply might be better to make it more readable
+
+sapply(s, function(x) {
+  colMeans(x[, c("Ozone", "Solar.R", "Wind")],
+           na.rm = TRUE) # this will eliminate the NAs
+})
+
+x <- rnorm(10)
+f1 <- gl(2, 5)
+f2 <- gl(5, 2)
+interaction(f1, f2) ## Create interaction of two factors
+str(split(x, list(f1, f2)))
+str(split(x, list(f1, f2), drop = TRUE)) # drop the empty values
+
+# tapply
+str(tapply)
+## Simulate some data
+x <- c(rnorm(10), runif(10), rnorm(10, 1))
+## Define some groups with a factor variable
+f <- gl(3, 10)
+f
+
+tapply(x, f, mean)
+tapply(x, f, mean, simplify = FALSE) # without simplify we get a list
+tapply(x, f, range)
+
+# apply
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
