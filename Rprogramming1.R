@@ -845,7 +845,7 @@ print(c(n, round(cr, 4)))
 
 lapply() # Loop over a list and evaluate a function on each element
 sapply() # Same as lapply but try to simplify the result
-apply() # Apply a function over the margins of an array
+apply() # Apply a function over the margins of an array. MARGIN is an integer vector indicating which margins should be “retained”.
 tapply() # Apply a function over subsets of a vector
 mapply() # Multivariate version of lapply
 
@@ -917,14 +917,38 @@ tapply(x, f, mean, simplify = FALSE) # without simplify we get a list
 tapply(x, f, range)
 
 # apply
+str(apply)
+x <- matrix(rnorm(200), 20, 10)
+apply(x, 2, mean) ## Take the mean of each column (value 2, rows 1)
+apply(x, 1, sum) ## Take the mean of each row
 
+# optimized apply functions
+rowSums = apply(x, 1, sum)
+rowMeans = apply(x, 1, mean)
+colSums = apply(x, 2, sum)
+colMeans = apply(x, 2, mean)
 
+x <- matrix(rnorm(200), 20, 10)
+## Get row quantiles
+apply(x, 1, quantile, probs = c(0.25, 0.75))
 
+a <- array(rnorm(2 * 2 * 10), c(2, 2, 10)) # third dimension 10?
+apply(a, c(1, 2), mean) # apply to both columns and rows
+rowMeans(a, dims = 2) ## Faster
 
+# mapply 
+str(mapply)
+list(rep(1, 4), rep(2, 3), rep(3, 2), rep(4, 1)) # difficult to type
+mapply(rep, 1:4, 4:1) # with mapply we dont need to write the whole list, it smplifies
 
-
-
-
+noise <- function(n, mean, sd) {
+  rnorm(n, mean, sd)
+}
+## Simulate 5 randon numbers
+noise(5, 1, 2)
+## This only simulates 1 set of numbers, not 5
+noise(1:5, 1:5, 2)
+mapply(noise, 1:5, 1:5, 2) # mapply does loop over all the values and assigns a different mean and the same sd
 
 
 
