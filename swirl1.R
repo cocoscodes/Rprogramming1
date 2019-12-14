@@ -302,6 +302,18 @@ sapply(flags, unique)
 
 lapply(unique_vals, function(elem) elem[2])
 
+# vapply & tapply ----
+
+vapply(flags, unique, numeric(1)) # specifies the type of output
+vapply(flags, class, character(1))
+
+table(flags$landmass)
+table(flags$animate)
+tapply(flags$animate, flags$landmass, mean)
+
+tapply(flags$population, flags$red, summary)
+
+tapply(flags$population, flags$landmass, summary)
 
 
 

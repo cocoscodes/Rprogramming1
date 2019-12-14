@@ -1031,8 +1031,27 @@ undebug(lm) ## Unflag the 'lm()' function for debugging
 options(error = recover) ## Change default R error behavior
 read.csv("nosuchfile") ## This code doesn't work
 
- 
+ # Quiz week 3 ----
+library(datasets)
+data(iris)
+?iris
+tapply(iris$Sepal.Length,iris$Species,mean)
+head(iris)
 
+library(datasets)
+data(mtcars)
+?mtcars
+head(mtcars)
+
+tapply(mtcars$mpg,mtcars$cyl,mean)
+with(mtcars,tapply(mpg,cyl,mean))
+sapply(split(mtcars$mpg,mtcars$cyl),mean)
+
+x <- tapply(mtcars$hp,mtcars$cyl,mean)
+round(x[3]-x[1],0)
+
+debug(ls)
+ls(x)
 
 
 
