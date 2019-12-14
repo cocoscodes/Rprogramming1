@@ -272,14 +272,35 @@ Sys.time()>t1 # using logical operators
 Sys.time() - t1 # how much time has passed
 difftime(Sys.time(), t1, units = 'days') # amount of time passed in days with difftime()
 
+swirl()
 
+# lapply & sapply ----
+head(flags)
+dim(flags)
+viewinfo(flags)
+cls_list <- lapply(flags, class)
+class(cls_list)
+as.character(cls_list) # simplifies the output
+cls_vect <- sapply(flags,class) # this simplifies the output
+class(cls_vect)
 
+sum(flags$orange)
+flag_colors <- flags[, 11:17]
+lapply(flag_colors,sum)
+sapply(flag_colors,sum)
+sapply(flag_colors,mean)
+flag_shapes <- flags[,19:23]
+shape_mat <- sapply(flag_shapes, range)
+shape_mat
+class(shape_mat)
 
+unique(c(3, 4, 5, 5, 5, 6, 6))
+unique_vals <- lapply(flags,unique)
+sapply(unique_vals,length)
 
+sapply(flags, unique)
 
-
-
-
+lapply(unique_vals, function(elem) elem[2])
 
 
 

@@ -1009,6 +1009,30 @@ printmessage3(1:2)# error, Vectorizing the function can be accomplished easily w
 printmessage4 <- Vectorize(printmessage2)
 out <- printmessage4(c(-1, 2)) 
 
+# R tools for debugging
+traceback() # prints out the function call stack after an error occurs; does nothing if there’s no error
+debug() # flags a function for “debug” mode which allows you to step through execution of a function one line at a time
+browser() # suspends the execution of a function wherever it is called and puts the function in debug mode
+trace() # # allows you to insert debugging code into a function a specific places
+recover() # allows you to modify the error behavior so that you can browse the function call stack
+
+rm(x)
+
+mean(x)
+traceback() # you can only use it immediattely after the error occurs
+
+lm(y ~ x)
+traceback()
+
+debug(lm) ## Flag the 'lm()' function for interactive debugging
+lm(y ~ x) # opens the browser tool every time
+undebug(lm) ## Unflag the 'lm()' function for debugging
+
+options(error = recover) ## Change default R error behavior
+read.csv("nosuchfile") ## This code doesn't work
+
+ 
+
 
 
 
