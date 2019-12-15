@@ -1052,8 +1052,82 @@ round(x[3]-x[1],0)
 
 debug(ls)
 ls(x)
+undebug(ls)
 
+# the <<- operator which can be used to assign a value to an object in an environment that is different from the current environment.
 
+# Programming assignment ----
 
+makeVector <- function(x = numeric()) {
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function() x
+  setmean <- function(mean) m <<- mean
+  getmean <- function() m
+  list(set = set, get = get,
+       setmean = setmean,
+       getmean = getmean)
+}
 
+x <- makeVector(c(1,2,3,4,5))
 
+cachemean <- function(x, ...) {
+  m <- x$getmean()
+  if(!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  data <- x$get()
+  m <- mean(data, ...)
+  x$setmean(m)
+  m
+}
+
+cachemean(x)
+
+# Part 1
+solve() # Computing the inverse of a square matrix
+solve(3)
+solve(0.3333333)
+
+## This functions help calculate the inverse matrix of a given matrix
+
+## This function creates a special list with 4 functions that relate to a given matrix
+
+makeCacheMatrix <- function(c = matrix()){
+  m <- NULL
+  set <- function(y) {
+    c <<- y
+    m <<- NULL
+  }
+  get <- function() c
+  setinv <- function(solve) m <<- solve # this calculates the inverse of the matrix
+  getinv <- function() m
+  list(set = set, get = get,
+       setinv = setinv,
+       getinv = getinv)
+}
+
+## This function takes the previously define list and uses it to generate the inverse matrix
+
+cacheSolve <- function(x, ...) {
+  ## Return a matrix that is the inverse of 'x'
+  m <- x$getinv()
+  if(!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setinv(m)
+  m
+}
+
+# Example to proof functionality
+x<-matrix(3:6,2,2)
+y <- makeCacheMatrix(x) # list of 4 functions
+x # original matrix
+cacheSolve(y) # inverse matrix
