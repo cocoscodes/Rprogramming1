@@ -1090,8 +1090,7 @@ cachemean(x)
 
 # Part 1
 solve() # Computing the inverse of a square matrix
-solve(3)
-solve(0.3333333)
+solve(matrix(1:4,2,2))
 
 ## This functions help calculate the inverse matrix of a given matrix
 
@@ -1131,3 +1130,4 @@ x<-matrix(3:6,2,2)
 y <- makeCacheMatrix(x) # list of 4 functions
 x # original matrix
 cacheSolve(y) # inverse matrix
+
