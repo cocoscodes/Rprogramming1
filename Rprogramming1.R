@@ -1131,3 +1131,12 @@ y <- makeCacheMatrix(x) # list of 4 functions
 x # original matrix
 cacheSolve(y) # inverse matrix
 
+# Notes on week 4 ----
+
+
+
+
+
+
+
+
