@@ -1186,7 +1186,7 @@ x <- rnorm(100)
 ## Simulate the error term
 e <- rnorm(100, 0, 2)
 ## Compute the outcome via the model
-y <- 0.5 + 2 * x +e
+y <- 0.5 + 2 * x + e
 summary(y)
 plot(x, y)
 
@@ -1231,3 +1231,46 @@ idx <- seq_len(nrow(airquality))
 ## Sample from the index vector
 samp <- sample(idx, 6)
 airquality[samp, ]
+
+# R profiler ----
+# very usefull when trying to optimize your code
+# We should normally not optimize the code unless we are running large analysis
+
+# Using 
+system.time() # evaluates the time it takes for an expression to run
+
+# user time: time charged to the CPU(s) for this expression
+# elapsed time: “wall clock” time, the amount of time that passes for you as you’re sitting there
+
+## Elapsed time > user time
+system.time(readLines("http://www.jhsph.edu"))
+## Elapsed time < user time
+hilbert <- function(n) { # hilbert type of matrix
+  i <- 1:n
+  1 / outer(i - 1, i, "+")
+}
+x <- hilbert(1000)
+system.time(svd(x))
+
+# Time longer expressions
+system.time({
+  n <- 1000
+  r <- numeric(n)
+  for(i in 1:n) {
+    x <- rnorm(n)
+    r[i] <- mean(x)
+  }
+  
+# Rprof
+Rprof() ## Turn on the profiler
+Rprof(NULL) ## Turn off the profiler
+
+Rprof()
+## lm(y ~ x)
+sample.interval=10000
+
+summaryRprof()
+
+
+
+
