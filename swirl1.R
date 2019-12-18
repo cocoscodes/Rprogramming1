@@ -315,6 +315,65 @@ tapply(flags$population, flags$red, summary)
 
 tapply(flags$population, flags$landmass, summary)
 
+# Looking at data ----
+ls()
+class()
+dim()
+nrow() # number of observations
+ncol()
+object.size() # size of the memory used
+names() # names of the columns (variables)
+head()
+tail()
+summary()
+table(plants$Active_Growth_Period) # to view the number of elements
+str() # the best function to view data
+
+# Simulation ----
+sample()
+sample(1:6, 4, replace = TRUE) # simulate rolling four six-sided dice
+sample(1:20,10)
+LETTERS
+sample(1:20,10) # permute the 26 variables
+flips <- sample(c(0,1),100,prob = c(0.3,0.7),replace = TRUE) # flipping an unfair coin 100 times, with tails 30% and heads 70%
+sum(flips)
+
+rbinom() # serves a better purpose to simulate binomial random variables
+rbinom(1, size = 100, prob = 0.7)# we are doing the same as above but inly specifying the number of success or 1s
+flips2 <- rbinom(100, size = 1, prob = 0.7)
+sum(flips2)
+
+rnorm(10)
+rnorm(10,mean = 100, sd = 25)
+
+rpois(5,10) # lamda is mean 10
+my_pois <- replicate(100,rpois(5,10)) # repet it 100 times and creates a matrix
+cm <- colMeans(my_pois)
+hist(cm)
+
+# Base Graphics ----
+data(cars)
+?cars
+head(cars)
+plot(cars)
+?plot
+plot(x = cars$speed, y = cars$dist)
+plot(x = cars$speed, y = cars$dist, xlab = "Speed")
+plot(x = cars$speed, y = cars$dist, ylab = "Stopping Distance")
+plot(x = cars$speed, y = cars$dist, xlab = "Speed", ylab = "Stopping Distance")
+plot(cars,main = "My Plot")
+plot(cars, sub = "My Plot Subtitle")
+?par
+plot(cars,col = 2)
+plot(cars,xlim = c(10, 15))
+?points
+plot(cars, pch = 2)
+
+data(mtcars)
+?boxplot
+boxplot(formula = mpg ~ cyl, data = mtcars) # by entering the formula argument and the tilde "~" we can explore relationships between two variables
+
+hist(mtcars$mpg) # uses only one argument
 
 
 
