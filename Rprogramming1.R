@@ -1289,3 +1289,33 @@ Rprof()
 fit <- lm(y ~ x1 + x2)
 Rprof(NULL)
 summaryRprof()
+
+# Programing assigment ----
+getwd()
+setwd("/Users/alejandrosolis/Desktop/Data_Sc/R/Rprogramming1/rprog_data_ProgAssignment3-data")
+
+outcome <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
+head(outcome)
+ncol(outcome)
+names(outcome) 
+outcome[, 11] <- as.numeric(outcome[, 11]) # 30-day mortality rates for heart attack
+hist(outcome[, 11])
+summary(outcome)
+str(outcome)
+
+best <- function(state, outcome) {
+  data <- read.csv("outcome-of-care-measures.csv")
+  if(is.na(match(state,data[,7]){
+    
+  }
+  ## Return hospital name in that state with lowest 30-day death
+  ## rate
+}
+
+state <- "BB"
+is.na(match(x,outcome[,7]))
+
+
+
+
+
