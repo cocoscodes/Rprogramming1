@@ -536,7 +536,7 @@ for(i in 1:100) {
   }
 }
 
-# Funtions ----
+# Functions ----
 add2 <- function(x,y){
   x+y
 }
@@ -1303,19 +1303,33 @@ hist(outcome[, 11])
 summary(outcome)
 str(outcome)
 
+# Best hospital rate in state
 best <- function(state, outcome) {
   data <- read.csv("outcome-of-care-measures.csv")
-  if(is.na(match(state,data[,7]){
-    
+  check1 <- !is.na(match(state,data[,7]))
+  check2 <- outcome %in% c("heart attack","heart failure","pneumonia")
+  if(check1==FALSE){
+    stop("invalid state")
+  } else if(check2==FALSE){
+    stop("invalid outcome")
+  } else {
+    fdata <- data[,c(2,7,11,17,23)]
+    cols <- list("heart attack"=3,"heart failure"= 4,"pneumonia"= 5)
+    idx <- cols[[outcome]][[1]]
+    stdata <- fdata[fdata$State==state,]
+    x <- suppressWarnings(as.numeric(levels(stdata[,idx])[stdata[,idx]]))
+    bad <- is.na(x)
+    min_val <- match(min(x[!bad],na.rm = TRUE),x)
+    result <- as.character(stdata[min_val,1])
+    print(result)
   }
-  ## Return hospital name in that state with lowest 30-day death
-  ## rate
 }
 
-state <- "BB"
-is.na(match(x,outcome[,7]))
-
-
-
+best("TX", "heart attack")
+best("TX", "heart failure")
+best("MD", "heart attack")
+best("MD", "pneumonia")
+best("BB", "heart attack")
+best("NY", "hert attack")
 
 
