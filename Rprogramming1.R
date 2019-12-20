@@ -1313,14 +1313,13 @@ best <- function(state, outcome) {
   } else if(check2==FALSE){
     stop("invalid outcome")
   } else {
-    fdata <- data[,c(2,7,11,17,23)]
+    stdata <- data[data$State==state,c(2,7,11,17,23)]
     cols <- list("heart attack"=3,"heart failure"= 4,"pneumonia"= 5)
     idx <- cols[[outcome]][[1]]
-    stdata <- fdata[fdata$State==state,]
     x <- suppressWarnings(as.numeric(levels(stdata[,idx])[stdata[,idx]]))
     bad <- is.na(x)
-    min_val <- match(min(x[!bad],na.rm = TRUE),x)
-    result <- as.character(stdata[min_val,1])
+    min_idx <- match(min(x[!bad],na.rm = TRUE),x)
+    result <- as.character(stdata[min_idx,1])
     print(result)
   }
 }
@@ -1331,5 +1330,4 @@ best("MD", "heart attack")
 best("MD", "pneumonia")
 best("BB", "heart attack")
 best("NY", "hert attack")
-
 
