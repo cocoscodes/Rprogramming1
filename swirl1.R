@@ -379,4 +379,3 @@ hist(mtcars$mpg) # uses only one argument
 
 
 
-

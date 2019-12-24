@@ -1329,3 +1329,101 @@ best("MD", "heart attack")
 best("MD", "pneumonia")
 best("BB", "heart attack")
 best("NY", "hert attack")
+best("SC", "heart attack")
+
+# Ranking hospitals by outcome in a state
+rankhospital <- function(state,outcome,num = "best"){
+  data <- read.csv("outcome-of-care-measures.csv")
+  check1 <- !is.na(match(state,data[,7]))
+  check2 <- outcome %in% c("heart attack","heart failure","pneumonia")
+  stdata <- data[data$State==state,c(2,7,11,17,23)]
+  cols <- list("heart attack"= 3,"heart failure"= 4,"pneumonia"= 5)
+  idx <- cols[[outcome]][[1]]
+  x <- suppressWarnings(as.numeric(levels(stdata[,idx])[stdata[,idx]]))
+  finalx <- sort(x, na.last = NA)
+  check3 <- length(finalx)
+  if(check1==FALSE){
+    stop("invalid state")
+  } else if(check2==FALSE){
+    stop("invalid outcome")
+  } else if(num == "best"){
+    rank_idx <- match(min(finalx),x)
+    result <- as.character(stdata[rank_idx,1])
+    print(result)
+  } else if (num == "worst"){
+    rank_idx <- match(max(finalx),x)
+    result <- as.character(stdata[rank_idx,1])
+    print(result)
+  } else if(num > check3){
+    return(NA)
+  } else {
+    rank_idx <- match(finalx[num],x)
+    result <- as.character(stdata[rank_idx,1])
+    print(result)
+  }
+}
+
+rankhospital("TX", "heart failure", 4)
+rankhospital("MD", "heart attack", "worst")
+rankhospital("MN", "heart attack", 5000)
+rankhospital("MD", "heart failure", 5)
+
+# Ranking hospitals in all states
+rankall <- function(outcome, num = "best"){
+  data <- read.csv("outcome-of-care-measures.csv")
+  finaldata <- data[,c(2,7,11,17,23)]
+  states <- as.character(sort(unique(finaldata[,2])))
+  check1 <- outcome %in% c("heart attack","heart failure","pneumonia")
+  cols <- list("heart attack"= 3,"heart failure"= 4,"pneumonia"= 5)
+  idx <- cols[[outcome]][[1]]
+  rank.data <- data.frame("hospital"=character(),"state"=character())
+  for(i in states){
+    stdata <- finaldata[finaldata$State==i,c(1,2,idx)]
+    x <- suppressWarnings(as.numeric(levels(stdata[,3])[stdata[,3]]))
+    finalx <- sort(x, na.last = NA)
+    if(check1==FALSE){
+      stop("invalid outcome")
+    } else if(num == "best") {
+      rank_idx <- match(min(finalx),x)
+      rank.data <- rbind(rank.data,data.frame("hospital" = stdata[rank_idx,1],"state"= stdata[rank_idx,2]))
+    } else if (num == "worst") {
+      rank_idx <- match(max(finalx),x)
+      rank.data <- rbind(rank.data,data.frame("hospital" = stdata[rank_idx,1],"state"= stdata[rank_idx,2]))
+    } else if(length(finalx)<num) {
+      rank.data <- rbind(rank.data,data.frame("hospital"="NA","state" = i))
+    } else {
+      rank_idx <- match(finalx[num],x)
+      rank.data <- rbind(rank.data,data.frame("hospital" = stdata[rank_idx,1],"state"= stdata[rank_idx,2])) 
+    }
+  }
+  rank.data
+}
+
+head(rankall("heart attack", 20), 10)
+tail(rankall("pneumonia", "worst"), 3)
+tail(rankall("heart failure"), 10)
+rankall("heart attack", "best") 
+
+# Quiz week 4 ----
+
+best("SC", "heart attack")
+best("NY", "pneumonia")
+best("AK", "pneumonia")
+rankhospital("NC", "heart attack", "worst")
+rankhospital("WA", "heart attack", 7)
+rankhospital("TX", "pneumonia", 10)
+rankhospital("NY", "heart attack", 7)
+
+r <- rankall("heart attack", 4)
+as.character(subset(r, state == "HI")$hospital)
+
+r <- rankall("pneumonia", "worst")
+as.character(subset(r, state == "NJ")$hospital)
+
+r <- rankall("heart failure", 10)
+as.character(subset(r, state == "NV")$hospital)
+
+
+
+
+
